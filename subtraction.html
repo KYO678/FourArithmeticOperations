@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>たのしい ひきざん 🍎</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 引き算専用のスタイル */
+        .removed-item {
+            opacity: 0.2;
+            position: relative;
+            filter: grayscale(100%);
+        }
+
+        .removed-item::after {
+            content: '✕';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2em;
+            color: red;
+            font-weight: bold;
+        }
+
+        .remaining-item {
+            animation: highlight 0.5s;
+        }
+
+        @keyframes highlight {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .minus-sign {
+            font-size: 4em;
+            color: #fd6585;
+            align-self: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .subtraction-visual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .from-group {
+            width: 100%;
+        }
+
+        .home-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        .home-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">🌟 たのしい ひきざん 🌟</h1>
+
+        <!-- 式の表示エリア -->
+        <div class="equation-display">
+            <span class="equation-num" id="num1">?</span>
+            <span class="equation-operator" style="color: #fd6585;">−</span>
+            <span class="equation-num" id="num2">?</span>
+            <span class="equation-operator">=</span>
+            <span class="equation-result" id="result">?</span>
+        </div>
+
+        <!-- Step 1: 数字を選ぶ -->
+        <div id="step1" class="step active">
+            <h2 class="question" id="questionText">はじめの かずを えらんでね！</h2>
+            <div class="number-buttons">
+                <button class="num-btn" onclick="selectNumber(1)">1</button>
+                <button class="num-btn" onclick="selectNumber(2)">2</button>
+                <button class="num-btn" onclick="selectNumber(3)">3</button>
+                <button class="num-btn" onclick="selectNumber(4)">4</button>
+                <button class="num-btn" onclick="selectNumber(5)">5</button>
+                <button class="num-btn" onclick="selectNumber(6)">6</button>
+                <button class="num-btn" onclick="selectNumber(7)">7</button>
+                <button class="num-btn" onclick="selectNumber(8)">8</button>
+                <button class="num-btn" onclick="selectNumber(9)">9</button>
+                <button class="num-btn" onclick="selectNumber(10)">10</button>
+                <button class="num-btn" onclick="selectNumber(11)">11</button>
+                <button class="num-btn" onclick="selectNumber(12)">12</button>
+                <button class="num-btn" onclick="selectNumber(13)">13</button>
+                <button class="num-btn" onclick="selectNumber(14)">14</button>
+                <button class="num-btn" onclick="selectNumber(15)">15</button>
+                <button class="num-btn" onclick="selectNumber(16)">16</button>
+                <button class="num-btn" onclick="selectNumber(17)">17</button>
+                <button class="num-btn" onclick="selectNumber(18)">18</button>
+                <button class="num-btn" onclick="selectNumber(19)">19</button>
+                <button class="num-btn" onclick="selectNumber(20)">20</button>
+            </div>
+        </div>
+
+        <!-- Step 2: 視覚的に表示 -->
+        <div id="step2" class="step">
+            <h2 class="visual-title">ここから とると...</h2>
+            <div class="subtraction-visual">
+                <div class="from-group">
+                    <div class="number-label" style="text-align: center; font-size: 2.5em; font-weight: bold; color: #ff6b6b; margin-bottom: 15px;">
+                        <span id="label1"></span> から <span id="label2"></span> を とる
+                    </div>
+                    <div class="ten-frames" id="frames1" style="margin: 0 auto;"></div>
+                </div>
+            </div>
+
+            <button class="calculate-btn" onclick="calculateResult()">
+                こたえを みる！ 🎈
+            </button>
+        </div>
+
+        <!-- Step 3: 結果を表示 -->
+        <div id="step3" class="step">
+            <div class="result-area">
+                <h2 class="answer-label">こたえは...</h2>
+                <div class="big-answer" id="bigAnswer"></div>
+                <div class="answer-explanation">
+                    <p style="font-size: 1.8em; color: #4ecdc4; margin-bottom: 20px;">のこりは これだけ！</p>
+                    <div class="ten-frames-result" id="resultFrames"></div>
+                </div>
+            </div>
+
+            <button class="reset-btn" onclick="resetGame()">
+                もういちど やる！ 🎉
+            </button>
+        </div>
+
+        <!-- ホームに戻るボタン -->
+        <div style="text-align: center; margin-top: 20px; padding-bottom: 20px;">
+            <a href="index.html" class="home-btn">🏠 もどる</a>
+        </div>
+    </div>
+
+    <script src="script-subtraction.js"></script>
+</body>
+</html>

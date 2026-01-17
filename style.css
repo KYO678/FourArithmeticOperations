@@ -389,3 +389,26 @@ body {
         padding: 20px 40px;
     }
 }
+
+/* ホームボタン */
+.home-btn {
+    display: inline-block;
+    padding: 15px 30px;
+    background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 15px;
+    font-size: 1.5em;
+    font-weight: bold;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s;
+}
+
+.home-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.home-btn:active {
+    transform: scale(0.98);
+}
