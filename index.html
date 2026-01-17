@@ -10,70 +10,72 @@
     <div class="container">
         <h1 class="title">🌟 たのしい たしざん 🌟</h1>
 
-        <!-- Step 1: 最初の数を選ぶ -->
+        <!-- 式の表示エリア -->
+        <div class="equation-display">
+            <span class="equation-num" id="num1">?</span>
+            <span class="equation-operator">+</span>
+            <span class="equation-num" id="num2">?</span>
+            <span class="equation-operator">=</span>
+            <span class="equation-result" id="result">?</span>
+        </div>
+
+        <!-- Step 1: 数字を選ぶ -->
         <div id="step1" class="step active">
-            <h2 class="question">1つめの かずを えらんでね！</h2>
+            <h2 class="question" id="questionText">1つめの かずを えらんでね！</h2>
             <div class="number-buttons">
-                <button class="num-btn" onclick="selectFirstNumber(1)">1</button>
-                <button class="num-btn" onclick="selectFirstNumber(2)">2</button>
-                <button class="num-btn" onclick="selectFirstNumber(3)">3</button>
-                <button class="num-btn" onclick="selectFirstNumber(4)">4</button>
-                <button class="num-btn" onclick="selectFirstNumber(5)">5</button>
-                <button class="num-btn" onclick="selectFirstNumber(6)">6</button>
-                <button class="num-btn" onclick="selectFirstNumber(7)">7</button>
-                <button class="num-btn" onclick="selectFirstNumber(8)">8</button>
-                <button class="num-btn" onclick="selectFirstNumber(9)">9</button>
-                <button class="num-btn" onclick="selectFirstNumber(10)">10</button>
+                <button class="num-btn" onclick="selectNumber(1)">1</button>
+                <button class="num-btn" onclick="selectNumber(2)">2</button>
+                <button class="num-btn" onclick="selectNumber(3)">3</button>
+                <button class="num-btn" onclick="selectNumber(4)">4</button>
+                <button class="num-btn" onclick="selectNumber(5)">5</button>
+                <button class="num-btn" onclick="selectNumber(6)">6</button>
+                <button class="num-btn" onclick="selectNumber(7)">7</button>
+                <button class="num-btn" onclick="selectNumber(8)">8</button>
+                <button class="num-btn" onclick="selectNumber(9)">9</button>
+                <button class="num-btn" onclick="selectNumber(10)">10</button>
+                <button class="num-btn" onclick="selectNumber(11)">11</button>
+                <button class="num-btn" onclick="selectNumber(12)">12</button>
+                <button class="num-btn" onclick="selectNumber(13)">13</button>
+                <button class="num-btn" onclick="selectNumber(14)">14</button>
+                <button class="num-btn" onclick="selectNumber(15)">15</button>
+                <button class="num-btn" onclick="selectNumber(16)">16</button>
+                <button class="num-btn" onclick="selectNumber(17)">17</button>
+                <button class="num-btn" onclick="selectNumber(18)">18</button>
+                <button class="num-btn" onclick="selectNumber(19)">19</button>
+                <button class="num-btn" onclick="selectNumber(20)">20</button>
             </div>
         </div>
 
-        <!-- Step 2: 2番目の数を選ぶ -->
+        <!-- Step 2: 視覚的に表示 -->
         <div id="step2" class="step">
-            <h2 class="question">2つめの かずを えらんでね！</h2>
-            <div class="number-buttons">
-                <button class="num-btn" onclick="selectSecondNumber(1)">1</button>
-                <button class="num-btn" onclick="selectSecondNumber(2)">2</button>
-                <button class="num-btn" onclick="selectSecondNumber(3)">3</button>
-                <button class="num-btn" onclick="selectSecondNumber(4)">4</button>
-                <button class="num-btn" onclick="selectSecondNumber(5)">5</button>
-                <button class="num-btn" onclick="selectSecondNumber(6)">6</button>
-                <button class="num-btn" onclick="selectSecondNumber(7)">7</button>
-                <button class="num-btn" onclick="selectSecondNumber(8)">8</button>
-                <button class="num-btn" onclick="selectSecondNumber(9)">9</button>
-                <button class="num-btn" onclick="selectSecondNumber(10)">10</button>
-            </div>
-        </div>
-
-        <!-- Step 3: 視覚的に表示 -->
-        <div id="step3" class="step">
+            <h2 class="visual-title">これを あわせると...</h2>
             <div class="visual-area">
-                <div class="group" id="group1">
-                    <div class="group-label" id="label1"></div>
-                    <div class="objects-container" id="objects1"></div>
+                <div class="number-group">
+                    <div class="number-label" id="label1"></div>
+                    <div class="ten-frames" id="frames1"></div>
                 </div>
 
                 <div class="plus-sign">➕</div>
 
-                <div class="group" id="group2">
-                    <div class="group-label" id="label2"></div>
-                    <div class="objects-container" id="objects2"></div>
+                <div class="number-group">
+                    <div class="number-label" id="label2"></div>
+                    <div class="ten-frames" id="frames2"></div>
                 </div>
             </div>
 
             <button class="calculate-btn" onclick="calculateResult()">
-                あわせると いくつ？ 🎈
+                こたえを みる！ 🎈
             </button>
         </div>
 
-        <!-- Step 4: 結果を表示 -->
-        <div id="step4" class="step">
+        <!-- Step 3: 結果を表示 -->
+        <div id="step3" class="step">
             <div class="result-area">
                 <h2 class="answer-label">こたえは...</h2>
-                <div class="answer-display">
-                    <div class="equation" id="equation"></div>
-                    <div class="big-answer" id="bigAnswer"></div>
+                <div class="big-answer" id="bigAnswer"></div>
+                <div class="answer-explanation">
+                    <div class="ten-frames-result" id="resultFrames"></div>
                 </div>
-                <div class="all-objects" id="allObjects"></div>
             </div>
 
             <button class="reset-btn" onclick="resetGame()">

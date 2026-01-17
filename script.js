@@ -1,6 +1,7 @@
 // ゲームの状態を管理
-let firstNumber = 0;
-let secondNumber = 0;
+let firstNumber = null;
+let secondNumber = null;
+let currentStep = 1; // 1: 最初の数選択, 2: 2番目の数選択
 
 // 絵文字の種類（ランダムに選ばれる）
 const emojis = ['🍎', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🍑', '🥝', '🍒'];
@@ -14,64 +15,96 @@ function showStep(stepNumber) {
     document.getElementById(`step${stepNumber}`).classList.add('active');
 }
 
-// 最初の数を選択
-function selectFirstNumber(num) {
-    firstNumber = num;
-    console.log('1つめの数:', firstNumber);
-
-    // ボタンをクリックしたときのフィードバック
+// 数字を選択
+function selectNumber(num) {
     playSound('select');
 
-    // 次のステップへ
-    setTimeout(() => {
-        showStep(2);
-    }, 300);
+    if (currentStep === 1) {
+        // 1つ目の数を選択
+        firstNumber = num;
+        document.getElementById('num1').textContent = num;
+
+        // 質問テキストを変更
+        document.getElementById('questionText').textContent = '2つめの かずを えらんでね！';
+
+        currentStep = 2;
+    } else if (currentStep === 2) {
+        // 2つ目の数を選択
+        secondNumber = num;
+        document.getElementById('num2').textContent = num;
+
+        // 視覚的に表示
+        setTimeout(() => {
+            displayVisual();
+            showStep(2);
+        }, 300);
+    }
 }
 
-// 2番目の数を選択
-function selectSecondNumber(num) {
-    secondNumber = num;
-    console.log('2つめの数:', secondNumber);
-
-    // ボタンをクリックしたときのフィードバック
-    playSound('select');
-
-    // 視覚的に表示
-    setTimeout(() => {
-        displayVisual();
-        showStep(3);
-    }, 300);
-}
-
-// 視覚的に数を表示
+// 視覚的に数を表示（10のフレームで）
 function displayVisual() {
     // ラベルを設定
     document.getElementById('label1').textContent = firstNumber;
     document.getElementById('label2').textContent = secondNumber;
 
-    // オブジェクトを表示
-    const objects1 = document.getElementById('objects1');
-    const objects2 = document.getElementById('objects2');
+    // 1つ目の数を表示
+    createTenFrames('frames1', firstNumber);
 
-    objects1.innerHTML = '';
-    objects2.innerHTML = '';
+    // 2つ目の数を表示
+    createTenFrames('frames2', secondNumber);
+}
 
-    // 1つ目のグループ
-    for (let i = 0; i < firstNumber; i++) {
-        const obj = document.createElement('div');
-        obj.className = 'object';
-        obj.textContent = selectedEmoji;
-        obj.style.animationDelay = `${i * 0.1}s`;
-        objects1.appendChild(obj);
+// 10のフレームを作成する関数
+function createTenFrames(containerId, number) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+
+    // 10のかたまりの数と余り
+    const tens = Math.floor(number / 10);
+    const ones = number % 10;
+
+    let itemIndex = 0;
+
+    // 10のかたまりを作成
+    for (let i = 0; i < tens; i++) {
+        const frame = document.createElement('div');
+        frame.className = 'ten-frame';
+
+        for (let j = 0; j < 10; j++) {
+            const item = document.createElement('div');
+            item.className = 'frame-item';
+            item.textContent = selectedEmoji;
+            item.style.animationDelay = `${itemIndex * 0.05}s`;
+            frame.appendChild(item);
+            itemIndex++;
+        }
+
+        container.appendChild(frame);
     }
 
-    // 2つ目のグループ
-    for (let i = 0; i < secondNumber; i++) {
-        const obj = document.createElement('div');
-        obj.className = 'object';
-        obj.textContent = selectedEmoji;
-        obj.style.animationDelay = `${i * 0.1}s`;
-        objects2.appendChild(obj);
+    // 余りの数（10未満）を作成
+    if (ones > 0) {
+        const frame = document.createElement('div');
+        frame.className = 'ten-frame partial';
+
+        // 絵文字を配置
+        for (let j = 0; j < ones; j++) {
+            const item = document.createElement('div');
+            item.className = 'frame-item';
+            item.textContent = selectedEmoji;
+            item.style.animationDelay = `${itemIndex * 0.05}s`;
+            frame.appendChild(item);
+            itemIndex++;
+        }
+
+        // 空のマスを追加（10個になるまで）
+        for (let j = ones; j < 10; j++) {
+            const item = document.createElement('div');
+            item.className = 'frame-item empty';
+            frame.appendChild(item);
+        }
+
+        container.appendChild(frame);
     }
 }
 
@@ -79,38 +112,39 @@ function displayVisual() {
 function calculateResult() {
     const result = firstNumber + secondNumber;
 
-    // 式を表示
-    document.getElementById('equation').textContent =
-        `${firstNumber} + ${secondNumber} =`;
+    // 式の結果部分を更新
+    document.getElementById('result').textContent = result;
+    document.getElementById('result').classList.add('revealed');
 
-    // 答えを表示
+    // 大きな答えを表示
     document.getElementById('bigAnswer').textContent = result;
 
-    // 全てのオブジェクトを表示
-    const allObjects = document.getElementById('allObjects');
-    allObjects.innerHTML = '';
-
-    for (let i = 0; i < result; i++) {
-        const obj = document.createElement('div');
-        obj.className = 'object';
-        obj.textContent = selectedEmoji;
-        obj.style.animationDelay = `${i * 0.05}s`;
-        allObjects.appendChild(obj);
-    }
+    // 結果を10のフレームで表示
+    createTenFrames('resultFrames', result);
 
     // 成功のサウンド
     playSound('success');
 
     // 結果画面へ
     setTimeout(() => {
-        showStep(4);
+        showStep(3);
     }, 500);
 }
 
 // ゲームをリセット
 function resetGame() {
-    firstNumber = 0;
-    secondNumber = 0;
+    firstNumber = null;
+    secondNumber = null;
+    currentStep = 1;
+
+    // 式をリセット
+    document.getElementById('num1').textContent = '?';
+    document.getElementById('num2').textContent = '?';
+    document.getElementById('result').textContent = '?';
+    document.getElementById('result').classList.remove('revealed');
+
+    // 質問テキストをリセット
+    document.getElementById('questionText').textContent = '1つめの かずを えらんでね！';
 
     // 新しい絵文字を選択
     selectedEmoji = emojis[Math.floor(Math.random() * emojis.length)];
